@@ -9,14 +9,14 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 
 app.use(express.json());
-const alloworigin=['http://localhost:3000','https://your-backend-name.onrender.com','http://localhost:3001'];
+const alloworigin=['http://localhost:3000','https://agroconnect-git-main-prakash-kunas-projects.vercel.app','http://localhost:3001'];
 app.use(cors({
     origin: alloworigin,
     credentials: true
 }));
 
 app.use((req, res, next) => {
-    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3004','https://your-backend-name.onrender.com','http://localhost:3001'];
+    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3004','https://agroconnect-git-main-prakash-kunas-projects.vercel.app','http://localhost:3001'];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.header('Access-Control-Allow-Origin', origin);
