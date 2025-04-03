@@ -9,8 +9,7 @@ function ProducerHome() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        // const response = await fetch('http://localhost:3001/session', {
-        const response = await fetch('http://agroconnect-webm.onrender.com/session', {
+        const response = await fetch('http://localhost:3001/session', {
           credentials: 'include',
         });
         const data = await response.json();
@@ -30,8 +29,7 @@ function ProducerHome() {
 
   const handleLogout = async () => {
     try {
-      // const response = await fetch('http://localhost:3001/logout', {
-        const response = await fetch('http://agroconnect-webm.onrender.com/logout', {
+      const response = await fetch('http://localhost:3001/logout', {
         method: 'POST',
         credentials: 'include',
       });

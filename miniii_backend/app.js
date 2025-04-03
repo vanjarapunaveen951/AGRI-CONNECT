@@ -9,25 +9,14 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 
 app.use(express.json());
-// app.use(cors({
-//     origin: 'https://agroconnect-webm.onrender.com',
-//     credentials: true
-// }));
-
-const allowdOrigins=['http://localhost:3000', 'https://agroconnect-webm.onrender.com'];
+const alloworigin=['http://localhost:3000','https://your-backend-name.onrender.com','http://localhost:3001'];
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowdOrigins.includes(origin)) {
-            callback(null, true); // Allow request
-        } else {
-            callback(new Error('Not allowed by CORS')); // Block request
-        }
-    },
+    origin: alloworigin,
     credentials: true
 }));
 
 app.use((req, res, next) => {
-    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3004','https://agroconnect-webm.onrender.com'];
+    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3004','https://your-backend-name.onrender.com','http://localhost:3001'];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.header('Access-Control-Allow-Origin', origin);
