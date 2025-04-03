@@ -1,0 +1,225 @@
+/* Products.css - Clean Styling without Animations */
+
+   
+.products-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Search Section Styling */
+  .search-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-input {
+    padding: 1rem 1.5rem;
+    width: 70%;
+    border: none;
+    border-radius: 50px 0 0 50px;
+    font-size: 1rem;
+    background-color: #f5f5f5;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    background-color: #ffffff;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-button {
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 0 50px 50px 0;
+    background-color: #1565C0;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .search-button:hover {
+    background-color: #0D47A1;
+  }
+  
+  /* Products Grid Styling */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  
+  /* Product Card Styling */
+  .product-card {
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  }
+  
+  .product-card:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .product-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .product-info {
+    padding: 1.5rem;
+    position: relative;
+  }
+  
+  .product-info h3 {
+    margin: 0 0 0.8rem;
+    font-size: 1.5rem;
+    color: #1565C0;
+    font-weight: 700;
+  }
+  
+  .product-info p {
+    margin: 0.5rem 0;
+    color: #555;
+    font-size: 1rem;
+  }
+  
+  .product-info p:nth-child(3) {
+    font-weight: 700;
+    color: #333;
+    font-size: 1.1rem;
+  }
+  
+  .product-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .view-details-button {
+    padding: 0.8rem 1.5rem;
+    background-color: #1565C0;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .view-details-button:hover {
+    background-color: #0D47A1;
+    box-shadow: 0 5px 15px rgba(21, 101, 192, 0.3);
+  }
+  
+  /* Loading Styling */
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #666;
+    position: relative;
+  }
+  
+  .loading:after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #1565C0;
+    border-radius: 50%;
+    border-top-color: transparent;
+    margin: 20px auto;
+  }
+  
+  /* Featured product badge */
+  .product-card .featured-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 2;
+  }
+  
+  /* Price tag styling */
+  .product-info p:nth-child(3)::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-color: #FFD700;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .products-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .search-section {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .search-input {
+      width: 100%;
+      border-radius: 50px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .search-button {
+      width: 100%;
+      border-radius: 50px;
+    }
+  }
+  
+  /* Empty state styling */
+  .products-grid:empty {
+    min-height: 300px;
+    background-image: url('https://source.unsplash.com/400x300/?farming');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.5;
+  }
+  
+  .products-grid:empty::after {
+    content: 'No products found';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 120px);
+    color: #666;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  /* Add smooth scrolling for the page */
+  html {
+    scroll-behavior: smooth;
+  }

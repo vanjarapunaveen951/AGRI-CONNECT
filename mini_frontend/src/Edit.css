@@ -1,0 +1,604 @@
+/* Edit.css - Enhanced UI styling for the Edit product form */
+
+:root {
+    --primary-color: #4CAF50;
+    --primary-dark: #3e8e41;
+    --primary-light: #81c784;
+    --secondary-color: #ff9800;
+    --text-color: #333;
+    --light-text: #666;
+    --error-color: #f44336;
+    --white: #fff;
+    --light-bg: #f8f9fa;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
+  
+  /* Body background animation */
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(-45deg, #e8f5e9, #c8e6c9, #b2dfdb, #e0f7fa);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+  }
+  
+  @keyframes gradientBG {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  /* Main container with glass effect */
+  .edit-container {
+    max-width: 800px;
+    width: 90%;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.6s ease-in-out;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  
+  /* Add a subtle leaf pattern to the background */
+  .edit-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 100 100'%3E%3Cpath fill='%234CAF50' fill-opacity='0.05' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/svg%3E");
+    z-index: -1;
+  }
+  
+  /* Add floating particles effect */
+  .edit-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: 
+      radial-gradient(circle at 20% 35%, rgba(76, 175, 80, 0.15) 0%, transparent 10%),
+      radial-gradient(circle at 75% 44%, rgba(255, 152, 0, 0.1) 0%, transparent 8%),
+      radial-gradient(circle at 46% 82%, rgba(76, 175, 80, 0.08) 0%, transparent 12%);
+    animation: floatingParticles 18s linear infinite;
+    z-index: -1;
+  }
+  
+  @keyframes floatingParticles {
+    0% {
+      background-position: 0% 0%, 0% 0%, 0% 0%;
+    }
+    100% {
+      background-position: 100% 100%, 100% 100%, 100% 100%;
+    }
+  }
+  
+  /* Logo styling with enhanced animation */
+  .form-logo {
+    display: block;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1.5rem;
+    background-color: var(--primary-color);
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,3.5L6,7.5V12.5L12,16.5L18,12.5V7.5L12,3.5M12,1L21,6V18L12,23L3,18V6L12,1M11,7H13V9H15V11H13V13H11V11H9V9H11V7Z'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    animation: logoAnimation 3s infinite;
+    position: relative;
+  }
+  
+  @keyframes logoAnimation {
+    0% {
+      transform: scale(1) rotate(0deg);
+      background-color: var(--primary-color);
+    }
+    25% {
+      transform: scale(1.05) rotate(5deg);
+      background-color: var(--primary-dark);
+    }
+    50% {
+      transform: scale(1) rotate(0deg);
+      background-color: var(--primary-color);
+    }
+    75% {
+      transform: scale(1.05) rotate(-5deg);
+      background-color: var(--primary-light);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      background-color: var(--primary-color);
+    }
+  }
+  
+  /* Form title with a decorative underline */
+  .form-title {
+    text-align: center;
+    color: var(--primary-dark);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    animation: slideDown 0.5s ease-out;
+  }
+  
+  .form-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-light), var(--primary-color), var(--primary-light));
+    border-radius: 2px;
+    animation: pulseLine 2s infinite;
+  }
+  
+  @keyframes pulseLine {
+    0% {
+      width: 80px;
+      opacity: 1;
+    }
+    50% {
+      width: 100px;
+      opacity: 0.8;
+    }
+    100% {
+      width: 80px;
+      opacity: 1;
+    }
+  }
+  
+  /* Form styling */
+  .edit-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    animation: fadeIn 0.8s ease-in-out;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Media queries for responsive design */
+  @media (max-width: 768px) {
+    .edit-form {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .form-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .edit-container {
+      padding: 1rem;
+      margin: 1rem auto;
+      width: 95%;
+    }
+    
+    .form-logo {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .edit-container {
+      width: 100%;
+      border-radius: 0;
+      margin: 0;
+      padding: 1rem 0.75rem;
+    }
+    
+    .button-group {
+      flex-direction: column;
+    }
+    
+    .submit-button,
+    .cancel-button {
+      width: 100%;
+      min-width: unset;
+    }
+    
+    .form-logo {
+      width: 50px;
+      height: 50px;
+    }
+    
+    .form-title {
+      font-size: 1.3rem;
+    }
+  }
+  
+  /* Form group styling */
+  .form-group {
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .form-group:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* First and last items span full width */
+  .form-group:first-child,
+  .form-group:last-child,
+  .form-group:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+  
+  /* Labels styling */
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: 600;
+    transition: var(--transition);
+  }
+  
+  /* Input fields styling */
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    background-color: var(--white);
+    transition: var(--transition);
+    color: var(--text-color);
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+  }
+  
+  /* Text area specific styling */
+  .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  /* Focus effect for inputs */
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  }
+  
+  /* Location input container */
+  .location-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  /* Location button styling */
+  .location-button {
+    align-self: flex-start;
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+    font-size: 0.9rem;
+  }
+  
+  .location-button::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7,-7.75 7,-13c0,-3.87 -3.13,-7 -7,-7zM12,11.5c-1.38,0 -2.5,-1.12 -2.5,-2.5s1.12,-2.5 2.5,-2.5 2.5,1.12 2.5,2.5 -1.12,2.5 -2.5,2.5z'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .location-button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+  }
+  
+  @keyframes ripple {
+    0% {
+      transform: scale(0, 0);
+      opacity: 1;
+    }
+    20% {
+      transform: scale(25, 25);
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(40, 40);
+    }
+  }
+  
+  .location-button:hover::after {
+    animation: ripple 1s ease-out;
+  }
+  
+  .location-button:hover {
+    background-color: #e68a00;
+    transform: translateY(-2px);
+  }
+  
+  /* Button group styling */
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    grid-column: 1 / -1;
+  }
+  
+  /* Submit button styling */
+  .submit-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    min-width: 150px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .submit-button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+  }
+  
+  .submit-button:hover::after {
+    animation: ripple 1s ease-out;
+  }
+  
+  .submit-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Cancel button styling */
+  .cancel-button {
+    background-color: #f5f5f5;
+    color: var(--text-color);
+    border: 1px solid #ddd;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    min-width: 150px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .cancel-button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+  }
+  
+  .cancel-button:hover::after {
+    animation: ripple 1s ease-out;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+  }
+  
+  /* Status messages styling */
+  .loading-message,
+  .error-message {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+    max-width: 90%;
+    border-radius: var(--border-radius);
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .loading-message {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .loading-message::before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(76, 175, 80, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: loader 1s linear infinite;
+  }
+  
+  .error-message {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--error-color);
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes loader {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Input field hover effects */
+  .form-group input:hover,
+  .form-group select:hover,
+  .form-group textarea:hover {
+    border-color: #bbb;
+  }
+  
+  /* Form group hover effect for the label */
+  .form-group:hover label {
+    color: var(--primary-color);
+  }
+  
+  /* Touch-friendly improvements for mobile */
+  @media (max-width: 768px) {
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 0.85rem 1rem;
+      font-size: 1rem;
+    }
+    
+    /* Better touch targets for mobile */
+    .location-button,
+    .submit-button,
+    .cancel-button {
+      padding: 0.85rem 1.5rem;
+      font-size: 1rem;
+    }
+    
+    /* Prevent hover effects on mobile which can cause issues */
+    .form-group:hover {
+      transform: none;
+    }
+    
+    .form-group:hover label {
+      color: var(--text-color);
+    }
+  }
+  
+  /* Fix for small portrait phones */
+  @media (max-width: 320px) {
+    .edit-container {
+      padding: 0.75rem 0.5rem;
+    }
+    
+    .form-title {
+      font-size: 1.2rem;
+    }
+    
+    .form-group label {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Fix for landscape orientation on mobile */
+  @media (max-height: 480px) and (orientation: landscape) {
+    .edit-container {
+      margin: 0.5rem auto;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .form-logo {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-title {
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+    
+    .form-group {
+      margin-bottom: 0.5rem;
+    }
+  }

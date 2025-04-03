@@ -1,0 +1,180 @@
+.comments-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .comments-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  
+  .header-icon {
+    color: #4f46e5;
+    margin-right: 0.75rem;
+  }
+  
+  .comments-header h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #4f46e5;
+    margin: 0;
+  }
+  
+  .comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .comment-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-left: 4px solid #4f46e5;
+  }
+  
+  .comment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: #f9fafb;
+  }
+  
+  .product-badge {
+    display: flex;
+    align-items: center;
+    background: #eff6ff;
+    color: #3b82f6;
+    padding: 0.25rem 0.75rem;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  
+  .product-badge svg {
+    margin-right: 0.3rem;
+  }
+  
+  .email-preview {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+  }
+  
+  .comment-details {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .comment-card.expanded .comment-details {
+    padding: 1.5rem;
+    max-height: 400px;
+  }
+  
+  .detail-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+  
+  .detail-row svg {
+    color: #6b7280;
+    margin-right: 0.5rem;
+  }
+  
+  .detail-row span:nth-child(2) {
+    font-weight: 500;
+    width: 4rem;
+    color: #4b5563;
+  }
+  
+  .detail-value {
+    color: #1f2937;
+    font-weight: 400;
+  }
+  
+  .message-content {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+  
+  .message-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+  }
+  
+  .message-content p {
+    background: #f3f4f6;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 0;
+    color: #1f2937;
+    line-height: 1.5;
+  }
+  
+  .loading-container,
+  .error-container,
+  .no-comments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: #6b7280;
+  }
+  
+  .loading-icon {
+    color: #4f46e5;
+    animation: spin 1.5s linear infinite;
+  }
+  
+  .error-icon {
+    color: #ef4444;
+  }
+  
+  .no-comments svg {
+    color: #9ca3af;
+    margin-bottom: 1rem;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Entrance animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .comments-list > div {
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  .comments-list > div:nth-child(1) { animation-delay: 0.1s; }
+  .comments-list > div:nth-child(2) { animation-delay: 0.2s; }
+  .comments-list > div:nth-child(3) { animation-delay: 0.3s; }
+  .comments-list > div:nth-child(4) { animation-delay: 0.4s; }
+  .comments-list > div:nth-child(5) { animation-delay: 0.5s; }

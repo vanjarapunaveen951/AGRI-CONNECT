@@ -1,0 +1,411 @@
+/* ProductDetails.css - Beautiful and Attractive Styling */
+
+.product-details-container {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+    padding: 40px 20px;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .product-details-card {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .product-details-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  }
+  
+  .product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 30px;
+  }
+  
+  .product-header h2 {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0;
+    position: relative;
+    padding-left: 15px;
+  }
+  
+  .product-header h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background: linear-gradient(to bottom, #3498db, #2980b9);
+    border-radius: 10px;
+  }
+  
+  .product-rating {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+  }
+  
+  .product-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+  }
+  
+  .detail-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .detail-group.full-width {
+    grid-column: 1 / -1;
+  }
+  
+  .detail-group label {
+    font-weight: 600;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .detail-group span {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    padding: 10px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+    border-left: 3px solid #3498db;
+  }
+  
+  .contact-section {
+    background-color: #f7f9fc;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+  }
+  
+  .contact-section h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .contact-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, #3498db, #2ecc71);
+    border-radius: 3px;
+  }
+  
+  .contact-options {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .whatsapp-button, .comment-button {
+    flex: 1;
+    min-width: 200px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .whatsapp-button {
+    background-color: #25D366;
+    color: white;
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+  }
+  
+  .whatsapp-button::before {
+    content: "📱";
+    font-size: 1.2rem;
+  }
+  
+  .whatsapp-button:hover {
+    background-color: #128C7E;
+    transform: translateY(-3px);
+  }
+  
+  .comment-button {
+    background-color: #3498db;
+    color: white;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+  }
+  
+  .comment-button::before {
+    content: "✉️";
+    font-size: 1.2rem;
+  }
+  
+  .comment-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+  }
+  
+  .comment-form-container {
+    background-color: #f7f9fc;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border: 1px dashed #bdc3c7;
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .comment-form-container h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
+  
+  .comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .email-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .email-fields label {
+    font-weight: 600;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+  
+  .comment-form input,
+  .comment-form textarea {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .comment-form input:focus,
+  .comment-form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  }
+  
+  .comment-form input:read-only {
+    background-color: #f7f9fc;
+    cursor: not-allowed;
+  }
+  
+  .comment-form textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  
+  .send-button {
+    background-color: #2ecc71;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+  }
+  
+  .send-button:hover {
+    background-color: #27ae60;
+    transform: translateY(-3px);
+  }
+  
+  .product-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .back-button {
+    background-color: #7f8c8d;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(127, 140, 141, 0.3);
+  }
+  
+  .back-button:hover {
+    background-color: #626e6f;
+    transform: translateY(-3px);
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    color: #3498db;
+    font-size: 1.2rem;
+    position: relative;
+  }
+  
+  .loading-spinner::after {
+    content: '';
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    max-width: 800px;
+    margin: 50px auto;
+    border-left: 5px solid #dc3545;
+  }
+  
+  /* Button to view location */
+  button[style] {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    padding: 8px 15px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-weight: 600 !important;
+    box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3) !important;
+  }
+  
+  button[style]:hover {
+    background-color: #388E3C !important;
+    transform: translateY(-2px) !important;
+  }
+  
+  /* Media Queries for Responsiveness */
+  @media (max-width: 768px) {
+    .product-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+    
+    .product-info-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .contact-options {
+      flex-direction: column;
+    }
+    
+    .whatsapp-button, .comment-button {
+      width: 100%;
+    }
+    
+    .product-actions {
+      justify-content: center;
+    }
+    
+    .product-details-card {
+      padding: 20px 15px;
+    }
+  }
+  
+  /* Add animation to hover effects */
+  .detail-group span:hover {
+    transform: translateX(5px);
+    transition: transform 0.3s ease;
+  }
+  
+  /* Pulse animation for important elements */
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+    }
+  }
+  
+  .product-rating:hover {
+    animation: pulse 1.5s infinite;
+  }
+  
+  /* Improve form accessibility */
+  .comment-form input:focus,
+  .comment-form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  }

@@ -1,0 +1,127 @@
+/* Modern & Captivating Theme with Light Blue Background and Enhanced Colors */
+:root {
+    --primary: #4A90E2; /* Soft Blue */
+    --secondary: #FF7F50; /* Coral */
+    --accent: #FFC107; /* Amber */
+    --background: #E3F2FD; /* Very Light Blue */
+    --card-bg: #FFFFFF; /* White Cards */
+    --text-primary: #2C3E50; /* Dark Slate Blue for readability */
+    --text-secondary: #FFC107; /* Amber for highlights */
+    --gradient-1: linear-gradient(45deg, #4A90E2, #76B9ED); /* Soft Blue Gradient */
+    --gradient-2: linear-gradient(45deg, #FF7F50, #FFAA66); /* Coral Gradient */
+    --shadow-color: rgba(0, 0, 0, 0.15); /* Subtle shadow */
+}
+
+/* Smooth Animations */
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes floatingEffect {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes glowingEffect {
+    0% { box-shadow: 0 0 10px rgba(74, 144, 226, 0.4); }
+    50% { box-shadow: 0 0 20px rgba(74, 144, 226, 0.6); }
+    100% { box-shadow: 0 0 10px rgba(74, 144, 226, 0.4); }
+}
+
+/* General Styles */
+body {
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: 'Poppins', sans-serif;
+}
+
+.my-products-container {
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.my-products-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInScale 1s ease-in-out;
+}
+
+.my-products-container h1 {
+    font-size: 3rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px var(--shadow-color);
+    animation: floatingEffect 3s infinite ease-in-out;
+}
+
+.products-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 6px 20px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInScale 0.8s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 12px 30px var(--shadow-color);
+    animation: glowingEffect 1.5s infinite;
+}
+
+.product-header h2 {
+    font-size: 2rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+.product-rating {
+    background: var(--gradient-2);
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    color: white;
+    font-weight: 600;
+}
+
+/* Buttons */
+.edit-button, .delete-button {
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right:22px;
+}
+
+.edit-button {
+    background: var(--gradient-1);
+    color: white;
+}
+
+.delete-button {
+    background: var(--gradient-2);
+    color: white;
+}
+
+.edit-button:hover, .delete-button:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .products-list {
+        grid-template-columns: 1fr;
+    }
+}
