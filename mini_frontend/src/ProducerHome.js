@@ -9,7 +9,7 @@ function ProducerHome() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/session`, {
+        const response = await fetch('http://localhost:3001/session', {
           credentials: 'include',
         });
         const data = await response.json();
@@ -29,7 +29,7 @@ function ProducerHome() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/logout`, {
+      const response = await fetch('http://localhost:3001/logout', {
         method: 'POST',
         credentials: 'include',
       });
