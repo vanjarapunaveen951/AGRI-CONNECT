@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from './utils/axios.config';
 import { FaUser, FaEnvelope, FaLock, FaUserTag } from 'react-icons/fa';
 import './Registration.css';
 
@@ -28,13 +28,7 @@ const Registration = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post('http://localhost:3001/registration', formData, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            });
+            const response = await axios.post('/registration', formData);
 
             if (response.data) {
                 setSuccessMessage('Registration successful! Redirecting...');
@@ -59,7 +53,7 @@ const Registration = () => {
                         <h2>Create Account</h2>
                         <p>Join our community of farmers and consumers</p>
                     </div>
-                    
+
                     <form onSubmit={handleSubmit}>
                         <div className="register-form-group">
                             <div className="input-icon-wrapper">
@@ -118,8 +112,8 @@ const Registration = () => {
                             </div>
                         </div>
 
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             className={`register-button ${loading ? 'loading' : ''}`}
                             disabled={loading}
                         >
@@ -131,7 +125,7 @@ const Registration = () => {
                     </form>
 
                     <div className="register-footer">
-                        <p>Already have an account? 
+                        <p>Already have an account?
                             <span onClick={() => navigate('/login')}> Login here</span>
                         </p>
                     </div>

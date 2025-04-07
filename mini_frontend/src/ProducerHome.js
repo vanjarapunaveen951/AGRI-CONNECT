@@ -1,47 +1,94 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './ProducerHome.css';
-import farmerImage from './1738995334930.jpg';
 
 function ProducerHome() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkSession = async () => {
+    // Check if user is logged in using localStorage
+    const checkAuth = () => {
       try {
-        const response = await fetch('http://localhost:3001/session', {
-          credentials: 'include',
-        });
-        const data = await response.json();
+        console.log('Checking auth in ProducerHome');
+        const userDataString = localStorage.getItem('userData');
 
-        if (!data.success || !data.email || !data.username) {
-          
+        if (!userDataString) {
+          console.log('No user data found in localStorage');
           navigate('/login');
+          return;
         }
+
+        const userData = JSON.parse(userDataString);
+        console.log('User data from localStorage:', userData);
+
+        if (!userData.isLoggedIn || !userData.email || userData.role !== 'producer') {
+          console.log('Invalid user data or not a producer');
+          navigate('/login');
+          return;
+        }
+
+        // User is authenticated as a producer
+        console.log('User authenticated as producer:', userData.email);
+
+        // Optional: Verify with backend that user exists
+        fetch(`${process.env.REACT_APP_API_URL}/session?email=${encodeURIComponent(userData.email)}`, {
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          console.log('Backend user check response:', response.status);
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error(`User check failed with status: ${response.status}`);
+        }).then(data => {
+          console.log('User data from backend:', data);
+        }).catch(error => {
+          console.log('Backend user check error (non-critical):', error);
+        });
+
       } catch (error) {
-        console.error('Error fetching session:', error);
+        console.error('Error checking authentication:', error);
         navigate('/login');
       }
     };
 
-    checkSession();
+    checkAuth();
   }, [navigate]);
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:3001/logout', {
+      console.log('Logging out...');
+
+      // Clear localStorage first to immediately invalidate the session on the client side
+      localStorage.removeItem('userData');
+      sessionStorage.clear();
+
+      // Then attempt to logout on the server side
+      fetch(process.env.REACT_APP_API_URL + '/logout', {
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }).then(response => {
+        console.log('Logout response status:', response.status);
+        return response.json();
+      }).then(data => {
+        console.log('Logout response data:', data);
+      }).catch(error => {
+        console.error('Error during server logout (non-critical):', error);
       });
-      const data = await response.json();
-      if (data.success) {
-        localStorage.removeItem('userToken');
-        navigate('/');
-      } else {
-        console.error('Logout failed:', data.message);
-      }
+
+      // Always navigate to home page regardless of server response
+      navigate('/');
     } catch (error) {
       console.error('Error during logout:', error);
+      // Even if there's an error, navigate to home page
+      navigate('/');
     }
   };
 
@@ -113,8 +160,8 @@ function ProducerHome() {
           </div>
         </div>
         <div className="hero-image">
-          <img 
-            src="https://img.freepik.com/free-vector/organic-flat-farming-profession-illustration_23-2148899114.jpg" 
+          <img
+            src="https://img.freepik.com/free-vector/organic-flat-farming-profession-illustration_23-2148899114.jpg"
             alt="Modern Farming"
             style={{
               maxWidth: "100%",

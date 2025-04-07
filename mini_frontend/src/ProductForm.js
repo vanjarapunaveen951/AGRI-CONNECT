@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProductForm.css';
-import farmerImage from './1738995334930.jpg';
 
 const ProductForm = () => {
     const navigate = useNavigate();
@@ -10,7 +9,7 @@ const ProductForm = () => {
         product_name: '',
         mobile_number: '',
         email: '',
-        price: '', // Changed from product_rating to price
+        price: '',
         address: '',
         farming: 'organic',
         stock_availability: ''
@@ -19,31 +18,49 @@ const ProductForm = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
+    // Check authentication
     useEffect(() => {
-        const fetchSessionData = async () => {
+        const checkAuth = () => {
             try {
-                const response = await fetch('http://localhost:3001/session', {
-                    credentials: 'include',
-                    method: 'GET'
-                });
-                const data = await response.json();
+                console.log('Checking auth in ProductForm');
+                const userDataString = localStorage.getItem('userData');
 
-                if (data.success && data.email && data.username) {
-                    setFormData(prev => ({
-                        ...prev,
-                        email: data.email,
-                        username: data.username
-                    }));
-                } else {
+                if (!userDataString) {
+                    console.log('No user data found in localStorage');
                     navigate('/login');
+                    return;
                 }
+
+                const userData = JSON.parse(userDataString);
+                console.log('User data from localStorage:', userData);
+
+                if (!userData.isLoggedIn || !userData.email || userData.role !== 'producer') {
+                    console.log('Invalid user data or not a producer');
+                    navigate('/login');
+                    return;
+                }
+
+                // User is authenticated as a producer
+                console.log('User authenticated as producer:', userData.email);
+
+                // Set the form data with user information
+                setFormData(prev => ({
+                    ...prev,
+                    email: userData.email,
+                    username: userData.username || userData.email.split('@')[0] // Use part before @ as username if no username
+                }));
+
+                console.log('Set initial form data with:', {
+                    email: userData.email,
+                    username: userData.username || userData.email.split('@')[0]
+                });
             } catch (error) {
-                console.error('Error fetching session:', error);
+                console.error('Error checking authentication:', error);
                 navigate('/login');
             }
         };
 
-        fetchSessionData();
+        checkAuth();
     }, [navigate]);
 
     const handleChange = (e) => {
@@ -78,10 +95,34 @@ const ProductForm = () => {
         setSuccessMessage('');
 
         // Check if any required field is empty
-        const requiredFields = ['product_name', 'mobile_number', 'address', 'stock_availability'];
+        const requiredFields = ['username', 'product_name', 'mobile_number', 'email', 'address', 'stock_availability'];
         for (const field of requiredFields) {
             if (!formData[field]) {
                 setErrorMessage(`${field.replace('_', ' ')} is required.`);
+                return;
+            }
+        }
+
+        // Make sure username is set
+        if (!formData.username) {
+            // If username is not set but we have userData, use that
+            const userDataString = localStorage.getItem('userData');
+            if (userDataString) {
+                const userData = JSON.parse(userDataString);
+                if (userData.username) {
+                    setFormData(prev => ({
+                        ...prev,
+                        username: userData.username
+                    }));
+                } else {
+                    // If no username in userData, use email as username
+                    setFormData(prev => ({
+                        ...prev,
+                        username: userData.email.split('@')[0] // Use part before @ as username
+                    }));
+                }
+            } else {
+                setErrorMessage('Username is required. Please log in again.');
                 return;
             }
         }
@@ -99,16 +140,41 @@ const ProductForm = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:3001/products', {
+            // Make a copy of the form data to ensure username is set
+            const productData = { ...formData };
+
+            // If username is still not set, try to get it from localStorage
+            if (!productData.username) {
+                const userDataString = localStorage.getItem('userData');
+                if (userDataString) {
+                    const userData = JSON.parse(userDataString);
+                    productData.username = userData.username || userData.email.split('@')[0];
+                }
+            }
+
+            console.log('Submitting product data:', productData);
+            const response = await fetch(process.env.REACT_APP_API_URL + '/products', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(productData),
                 credentials: 'include'
             });
 
+            if (response.status === 401) {
+                console.log('Unauthorized response when adding product');
+                // Check if we're still authenticated on the client side
+                const userDataString = localStorage.getItem('userData');
+                if (!userDataString) {
+                    navigate('/login');
+                    return;
+                }
+            }
+
             const data = await response.json();
+            console.log('Product submission response:', data);
 
             if (data.success) {
                 setSuccessMessage('Product added successfully!');
@@ -118,17 +184,20 @@ const ProductForm = () => {
                     product_name: '',
                     mobile_number: '',
                     email: formData.email, // Keep email
-                    price: '', // Reset price (changed from product_rating)
+                    price: '',
                     address: '',
                     farming: 'organic',
                     stock_availability: ''
                 });
+                alert('Product added successfully!');
             } else {
                 setErrorMessage(data.message || 'Error adding product');
+                alert('Error adding product: ' + (data.message || 'Unknown error'));
             }
         } catch (error) {
-            setErrorMessage('Error connecting to server');
+            setErrorMessage('Error connecting to server: ' + error.message);
             console.error('Error:', error);
+            alert('Error connecting to server: ' + error.message);
         }
     };
 
@@ -210,8 +279,8 @@ const ProductForm = () => {
                                     placeholder="Location will appear here"
                                     readOnly
                                 />
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     onClick={getCurrentLocation}
                                     style={{
                                         padding: '8px 16px',
@@ -267,7 +336,7 @@ const ProductForm = () => {
                     </form>
                 </div>
                 <div className="image-container">
-                    <div className="animation-container" 
+                    <div className="animation-container"
                         style={{
                             width: '300px',
                             height: '300px',

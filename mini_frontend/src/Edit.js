@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import './Edit.css'; // Make sure this points to the CSS file I provided earlier
+import './Edit.css';
 
 const Edit = () => {
     const [formData, setFormData] = useState({
@@ -17,34 +17,72 @@ const Edit = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
+    // Check authentication
     useEffect(() => {
-        const fetchProduct = async () => {
+        const checkAuth = () => {
             try {
-                const response = await fetch(`http://localhost:3001/products/${id}`, {
-                    credentials: 'include'
-                });
+                console.log('Checking auth in Edit');
+                const userDataString = localStorage.getItem('userData');
 
-                if (response.status === 401) {
+                if (!userDataString) {
+                    console.log('No user data found in localStorage');
                     navigate('/login');
                     return;
                 }
 
-                const data = await response.json();
-                if (data.success) {
-                    setFormData(data.product);
-                } else {
-                    throw new Error(data.message || 'Failed to fetch product details');
+                const userData = JSON.parse(userDataString);
+                console.log('User data from localStorage:', userData);
+
+                if (!userData.isLoggedIn || !userData.email || userData.role !== 'producer') {
+                    console.log('Invalid user data or not a producer');
+                    navigate('/login');
+                    return;
                 }
+
+                // User is authenticated as a producer
+                console.log('User authenticated as producer:', userData.email);
+                fetchProduct();
             } catch (error) {
-                console.error('Error:', error);
-                setError('Failed to load product details');
-            } finally {
-                setLoading(false);
+                console.error('Error checking authentication:', error);
+                navigate('/login');
             }
         };
 
-        fetchProduct();
-    }, [id, navigate]);
+        checkAuth();
+    }, [navigate]);
+
+    const fetchProduct = async () => {
+        try {
+            console.log('Fetching product details for ID:', id);
+            setLoading(true);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/products/${id}`, {
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.status === 401) {
+                console.log('Unauthorized response when fetching product');
+                // We'll try to continue anyway since we're using localStorage for auth
+            }
+
+            const data = await response.json();
+            console.log('Product data:', data);
+
+            if (data.success) {
+                setFormData(data.product);
+            } else {
+                throw new Error(data.message || 'Failed to fetch product details');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setError('Failed to load product details');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -87,29 +125,61 @@ const Edit = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3001/products/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify(formData)
-            });
-
-            if (response.status === 401) {
+            // Get the user's email from localStorage
+            const userDataString = localStorage.getItem('userData');
+            if (!userDataString) {
                 navigate('/login');
                 return;
             }
 
+            const userData = JSON.parse(userDataString);
+            const email = userData.email;
+
+            // Make sure the email in the form data matches the logged-in user
+            const updatedFormData = {
+                ...formData,
+                email: email // Ensure the email is set correctly
+            };
+
+            console.log('Submitting updated product data:', updatedFormData);
+            // Add email as a query parameter for authentication
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/products/${id}?email=${encodeURIComponent(email)}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(updatedFormData)
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                console.log(`Error response when updating product: ${response.status}`);
+                if (response.status === 403) {
+                    alert('You can only update your own products');
+                    return;
+                }
+
+                // Check if we're still authenticated on the client side
+                if (!userDataString) {
+                    navigate('/login');
+                    return;
+                }
+            }
+
             const data = await response.json();
+            console.log('Update response:', data);
+
             if (data.success) {
+                alert('Product updated successfully!');
                 navigate('/myproducts');
             } else {
                 throw new Error(data.message || 'Failed to update product');
             }
         } catch (error) {
             console.error('Error:', error);
-            setError('Failed to update product');
+            setError('Failed to update product: ' + error.message);
+            alert('Failed to update product: ' + error.message);
         }
     };
 

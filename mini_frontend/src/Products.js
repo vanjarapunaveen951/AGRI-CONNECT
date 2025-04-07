@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from './utils/axios.config';
 import './Products.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ const Products = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/products_data');
+            const response = await axios.get('/products_data');
             setProducts(response.data);
             setLoading(false);
         } catch (error) {
@@ -47,7 +47,7 @@ const Products = () => {
                 await fetchProducts();
                 return;
             }
-            const response = await axios.get(`http://localhost:3001/filter?product_name=${searchTerm}`);
+            const response = await axios.get(`/filter?product_name=${searchTerm}`);
             setProducts(response.data);
         } catch (error) {
             console.error('Error searching products:', error);
@@ -115,13 +115,13 @@ const Products = () => {
             ) : (
                 <div className="products-grid">
                     {products.map((product, index) => {
-                       
+
                         const productImage = images[product.product_name.toLowerCase()] || "https://source.unsplash.com/800x600/?agriculture";
-                        
+
                         return (
                             <div key={index} className="product-card">
                                 <div className="product-image">
-                                    <img 
+                                    <img
                                         src={productImage}
                                         alt={product.product_name}
                                     />
@@ -131,7 +131,7 @@ const Products = () => {
                                     <p>Farmer👨‍🌾 : {product.username}</p>
                                     <p>Price: ₹{product.price}</p>
                                     <div className="product-actions">
-                                        <button 
+                                        <button
                                             className="view-details-button"
                                             onClick={() => navigate(`/product/${product._id}`)}
                                         >

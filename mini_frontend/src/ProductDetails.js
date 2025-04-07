@@ -11,19 +11,54 @@ const ProductDetails = () => {
     const [fromEmail, setFromEmail] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
-    const consumerEmail = sessionStorage.getItem('email'); 
 
+    // Check authentication
+    useEffect(() => {
+        // Check if user is logged in using localStorage
+        const checkAuth = () => {
+            try {
+                console.log('Checking auth in ProductDetails');
+                const userDataString = localStorage.getItem('userData');
+
+                if (!userDataString) {
+                    console.log('No user data found in localStorage');
+                    navigate('/login');
+                    return;
+                }
+
+                const userData = JSON.parse(userDataString);
+                console.log('User data from localStorage:', userData);
+
+                if (!userData.isLoggedIn || !userData.email) {
+                    console.log('Invalid user data');
+                    navigate('/login');
+                    return;
+                }
+
+                // User is authenticated
+                console.log('User authenticated:', userData.email);
+                setFromEmail(userData.email);
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                navigate('/login');
+            }
+        };
+
+        checkAuth();
+    }, [navigate]);
+
+    // Fetch product details
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:3001/products/${id}`, {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/products/${id}`, {
                     credentials: 'include'
                 });
 
                 if (response.status === 401) {
-                    navigate('/login');
-                    return;
+                    console.log('Unauthorized response when fetching product');
+                    // We'll continue anyway since we're using localStorage for auth
                 }
 
                 const data = await response.json();
@@ -41,27 +76,27 @@ const ProductDetails = () => {
         };
 
         fetchProductDetails();
-    }, [id, navigate]);
-
-    useEffect(() => {
-        if (consumerEmail && !fromEmail) {
-            setFromEmail(consumerEmail);
-        }
-    }, [consumerEmail, fromEmail]);
+    }, [id]);
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
-        if (!comment.trim() || !fromEmail) return;
+        if (!comment.trim() || !fromEmail) {
+            alert('Please enter a comment and ensure you are logged in');
+            return;
+        }
 
         try {
-            const response = await fetch('http://localhost:3001/send-message', {
+            console.log('Submitting comment from:', fromEmail, 'to:', product.email);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/send-message`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    Consumer_mail: fromEmail, 
+                    Consumer_mail: fromEmail,
                     Producer_mail: product.email,
+                    product_name: product.product_name, // Add product_name which is required by the backend
                     message: comment.trim()
                 }),
                 credentials: 'include'
@@ -135,7 +170,7 @@ const ProductDetails = () => {
                         <label>Address:</label>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <span>{product.address}</span>
-                            <button 
+                            <button
                                 onClick={handleViewLocation}
                                 style={{
                                     padding: '5px 10px',
@@ -155,7 +190,7 @@ const ProductDetails = () => {
                 <div className="contact-section">
                     <h3>Contact Producer</h3>
                     <div className="contact-options">
-                        <a 
+                        <a
                             href={getWhatsAppLink(product.mobile_number)}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -179,11 +214,11 @@ const ProductDetails = () => {
                         <form onSubmit={handleCommentSubmit} className="comment-form">
                             <div className="email-fields">
                                 <label>From (Your Email):</label>
-                               
+
                                 <input
                                     type="email"
-                                    value={fromEmail}  
-                                    onChange={(e) => setFromEmail(e.target.value)} 
+                                    value={fromEmail}
+                                    onChange={(e) => setFromEmail(e.target.value)}
                                     placeholder="Your email"
                                     required
                                 />
@@ -210,8 +245,8 @@ const ProductDetails = () => {
                                 placeholder="Write your comment here..."
                                 required
                             />
-                            <button 
-                                type="submit" 
+                            <button
+                                type="submit"
                                 className="send-button"
                             >
                                 Submit Comment
@@ -221,7 +256,7 @@ const ProductDetails = () => {
                 )}
 
                 <div className="product-actions">
-                    <button 
+                    <button
                         className="back-button"
                         onClick={() => navigate(-1)}
                     >

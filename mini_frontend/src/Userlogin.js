@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { FaEnvelope, FaLock, FaArrowRight, FaExclamationCircle } from 'react-icons/fa';
 import './Userlogin.css';
-
-// Configure axios defaults
-axios.defaults.withCredentials = true;
 
 const UserLogin = () => {
     const [email, setEmail] = useState('');
@@ -20,27 +16,55 @@ const UserLogin = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:3001/login', 
-                { email, password },
-                { 
-                    withCredentials: true,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
+            console.log('Attempting login for:', email);
 
-            if (response.data.success) {
+            // Use fetch instead of axios for more control over credentials
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ email, password })
+            });
+
+            console.log('Login response status:', response.status);
+
+            if (!response.ok) {
+                throw new Error(`Login failed with status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Login response data:', data);
+
+            if (data.success) {
+                // Store user info in localStorage for persistent auth
+                const userData = {
+                    email: data.user.email,
+                    username: data.user.username || '',
+                    role: data.user.role || '',
+                    isLoggedIn: true,
+                    loginTime: new Date().toISOString()
+                };
+
+                // Store as a JSON string
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                console.log('Login successful, redirecting based on role:', data.user.role);
+
                 // Redirect based on role
-                if (response.data.user.role === 'producer') {
+                if (data.user.role === 'producer') {
                     navigate('/ProducerHome');
                 } else {
                     navigate('/ConsumerHome');
                 }
+            } else {
+                setError(data.message || 'Login failed. Please try again.');
             }
         } catch (error) {
             console.error('Login error:', error);
-            setError(error.response?.data?.message || 'Login failed. Please try again.');
+            setError(error.message || 'Login failed. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -102,8 +126,8 @@ const UserLogin = () => {
                         <a href="#" className="forgot-password">Forgot Password?</a>
                     </div>
 
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         className={`login-button ${loading ? 'loading' : ''}`}
                         disabled={loading}
                     >
@@ -116,7 +140,7 @@ const UserLogin = () => {
                 </form>
 
                 <div className="login-footer">
-                    <p>Don't have an account? 
+                    <p>Don't have an account?
                         <span onClick={() => navigate('/register')}> Create one now</span>
                     </p>
                 </div>
