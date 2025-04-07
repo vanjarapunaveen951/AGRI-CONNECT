@@ -9,12 +9,18 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 
 app.use(express.json());
+// Serve static files from the public directory
+app.use(express.static('public'));
+
 // Define allowed origins
 const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:3004',
     'http://localhost:3001',
-    'https://miniprojectim.vercel.app',  // Add your deployed frontend URL here
+    'https://miniprojectim.vercel.app',
+    'https://agroconnect-frontend-ec2q.onrender.com',  // Your deployed frontend URL
+    // Allow all subdomains of render.com for development/testing
+    'https://*.onrender.com',
     // Add any other frontend URLs as needed
 ];
 
@@ -24,11 +30,19 @@ app.use(cors({
         // Allow requests with no origin (like mobile apps, curl, etc)
         if (!origin) return callback(null, true);
 
+        // Check exact matches first
         if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
+            return callback(null, true);
         }
+
+        // Check for wildcard domains (*.onrender.com)
+        const isRenderDomain = origin && origin.endsWith('.onrender.com');
+        if (isRenderDomain) {
+            return callback(null, true);
+        }
+
+        // If no match, reject with error
+        callback(new Error(`Origin ${origin} not allowed by CORS`));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -38,10 +52,20 @@ app.use(cors({
 // Additional headers for CORS
 app.use((req, res, next) => {
     const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-        res.header('Access-Control-Allow-Origin', origin);
+
+    // Set Access-Control-Allow-Origin header for allowed origins
+    if (origin) {
+        // Check exact matches first
+        if (allowedOrigins.includes(origin)) {
+            res.header('Access-Control-Allow-Origin', origin);
+        }
+        // Check for Render domains
+        else if (origin.endsWith('.onrender.com')) {
+            res.header('Access-Control-Allow-Origin', origin);
+        }
     }
 
+    // Set other CORS headers
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -668,6 +692,15 @@ app.get('/check-test-session', (req, res) => {
         sessionID: req.sessionID,
         testValue: req.session.testValue || 'No test value found',
         allSessionData: req.session
+    });
+});
+
+// Test route for CORS
+app.get('/test-cors', (req, res) => {
+    res.json({
+        success: true,
+        message: 'CORS is working correctly!',
+        origin: req.headers.origin || 'No origin header'
     });
 });
 

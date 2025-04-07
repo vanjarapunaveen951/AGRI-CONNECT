@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>CORS Test Page</h1>
+    <p>This page tests if CORS is properly configured on your backend.</p>
+    
+    <div>
+        <label for="backend-url">Backend URL:</label>
+        <input type="text" id="backend-url" value="https://agroconnect-backend-42rn.onrender.com" style="width: 400px;">
+    </div>
+    
+    <div style="margin-top: 10px;">
+        <button onclick="testCORS()">Test CORS</button>
+    </div>
+    
+    <div id="result" class="result" style="display: none;"></div>
+    
+    <script>
+        async function testCORS() {
+            const backendUrl = document.getElementById('backend-url').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            
+            try {
+                // Test the /test-cors endpoint
+                resultDiv.innerHTML = 'Testing CORS... Please wait.';
+                resultDiv.className = 'result';
+                
+                const response = await fetch(`${backendUrl}/test-cors`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <h3 class="success">CORS is working correctly!</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = `
+                        <h3 class="error">CORS test failed with status: ${response.status}</h3>
+                        <p>Error: ${response.statusText}</p>
+                    `;
+                    resultDiv.className = 'result error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3 class="error">CORS test failed</h3>
+                    <p>Error: ${error.message}</p>
+                    <p>This is likely a CORS issue. Check your browser console for more details.</p>
+                `;
+                resultDiv.className = 'result error';
+                console.error('CORS test error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
